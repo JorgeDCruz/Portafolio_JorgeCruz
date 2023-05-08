@@ -1,0 +1,15 @@
+Actividad Integradora 2
+
+Equipo:
+Jorge Daniel Cruz Case - A01634536 
+Alberto Estrada Guerrero - A01276671
+
+Partes de la integardora:
+
+Lectura de archivos y creación de grafo a través de la matriz de adyacencia: Jorge Daniel Cruz
+
+Parte 1 (Algoritmo de Floyd - Warshall): Alberto Estrada Guerrero
+
+Parte 2 (Traveling Salesman Problem): Jorge Daniel Cruz
+
+Parte 3 (Algoritmo de Ford Fulkerson): Alberto Estrada Guerrero
