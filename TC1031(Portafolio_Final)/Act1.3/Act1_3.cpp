@@ -1,0 +1,183 @@
+//Hecho por: Jorge Daniel Cruz Case
+//Actividad 1.3 Actividad Integral de Conceptos Básicos y Algoritmos Fundamentales
+//Codigo para el ordenamiento y lectura del archivo "Bitacora" mediante algoritmos vistos en clase
+//21/09/2021
+
+// g++ -std=c++17 -o main -g *.cpp
+// valgrind --leak-check=full ./main
+
+
+//Librerias
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
+#include <sstream>
+#include <chrono>
+#include "dateTime.h"
+//using namespace std;
+
+//Algoritmo para la lectura del archivo y llenado del vector
+//Complejidad total: O(n)
+void cargaDatos(string doc, vector <dateTime>& lista){
+    ifstream archivo;
+    archivo.open(doc);
+    int contador = 0;
+    if (archivo.is_open()){
+        string linea;
+        while(getline(archivo,linea)){ 
+            stringstream sstr(linea); 
+            string dato = "";
+            vector<string> m;
+            while (getline(sstr, dato,' ')) { 
+                m.push_back(dato); 
+            }  
+            string problema = m[4];
+            int tamanio = m.size();
+            for (int i = 5; i<tamanio; i++) { 
+                problema += (" " +m[5]);
+                m[4] = problema;
+                m.erase(m.begin()+5);
+            }
+            string horario = m[2];
+            stringstream lineahora(horario);
+            vector<string> h; 
+            string hora = "";
+            while (getline(lineahora, hora,':')){ 
+                    h.push_back(hora);
+            }  
+            int horas = stoi(h[0]);
+            int minutos = stoi(h[1]);
+            int segundos = stoi(h[2]);
+            int dia = stoi(m[1]);
+            string mes = m[0];
+            string ip = m[3];
+            string error = m[4];
+            dateTime fecha(mes,dia,horas, minutos, segundos,ip,error);
+            lista.push_back(fecha); 
+        }
+         archivo.close(); 
+    }
+    else{
+        cout<< "Error de lectura de archivo"<<endl;
+    }
+}
+
+//Algoritmo para la escritura de los datos ordenaos en un archivo llamado "Bitacora_ordenada"
+//Complejidad total del algoritmo: O(n)
+void escribirArchivo(vector <dateTime>& lista){
+    ofstream file;
+    string nombreArchivo = "bitacora_Ordenada.txt";
+    file.open(nombreArchivo.c_str(), fstream::out);
+    int n = lista.size();
+    for (int i=0;  i <n;  i++){//Complejidad: O(n)
+        file<<"-----------------------------------------";
+        file << "Registro no. " << i+1<<"\n"<<endl;
+        file << "Dia: "<< lista[i].getDia()<<endl;
+        file << "Mes: "<< lista[i].getMes() <<endl;
+        file << "Hora: "<<  lista[i].getHoras() <<":"<<lista[i].getMinutos()<<":"<<lista[i].getSegundos()<<endl;
+        file << "Direccion de IP: "<< lista[i].getIP() <<endl; 
+        file << "Causa de la falla: "<< lista[i].getError()<<endl;
+        file<<"-----------------------------------------";
+
+    }
+    file.close();
+}
+
+
+int main(){
+    //Empieza el conteo
+    auto startTime = std::chrono::high_resolution_clock::now();
+
+    //Vectores iniciales
+    vector<string> b{};
+    vector<int> solucion{0,0};
+    vector <dateTime> lista;
+    vector <dateTime> lista2;
+    //LLenado y ordenamiento de los datos
+    
+    try{
+        cargaDatos("bitacora.txt", lista);
+    }
+    catch(const char* msg){
+        //Arrojo la excepcion 
+        std::cerr << msg << std::endl;
+    }
+    //Quick sort
+    lista[0].quickSort(lista, 0, lista.size()-1);
+    
+    //quickSort(lista, 0, lista.size()-1);
+    escribirArchivo(lista);
+    
+    //Tiempo de llenado
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto totalTime = endTime - startTime;
+    cout << "Tiempo de llenado y ordenamiento: " << totalTime/std::chrono::milliseconds(1) <<" ms"<<endl;
+    
+    //Atributos
+    string mes_inf, mes_sup;
+    int dia_inf, dia_sup, hora_inf, hora_sup, min_inf, min_sup, seg_inf, seg_sup;
+    
+    int busqueda_binaria_inf;
+    int busqueda_binaria_sup;
+    int inf, sup;
+
+    //Entrada de datos del usuario
+    //Esto se comenta para evitar errores, si es necesario se puede descomentar e ingresar los datos manualmente
+    /*
+    std::cout << "\nIngrese la fecha inferior: " << std::endl;
+    std::cout << "Mes: ";
+    std::cin >>mes_inf;
+    std::cout << "Dia: ";
+    std::cin>>dia_inf;
+    std::cout << "Hora: ";
+    std::cin>>hora_inf;
+    std::cout << "Minuto: ";
+    std::cin>>min_inf;
+    std::cout << "Segundo: ";
+    std::cin>>seg_inf;
+    dateTime fecha_inf(mes_inf, dia_inf, hora_inf, min_inf, seg_inf, "", "");
+    */
+
+    dateTime fecha_inf("Jul", 4, 18, 49, 57, "", "");
+    
+    busqueda_binaria_inf = fecha_inf.busquedaBinaria(lista, fecha_inf.getDate());
+    
+    
+    if(busqueda_binaria_inf==-1){
+        std::cout << "\nLa fecha ingresada no se encontro" << std::endl;
+    }
+    else{
+       std::cout <<"Resultado de la busqueda inferior: "<< busqueda_binaria_inf << std::endl; 
+    }
+
+    //Esto se comenta para evitar errores, si es necesario se puede descomentar e ingresar los datos manualmente
+    /*
+    std::cout << "\nIngrese la fecha superior: " << endl;
+    std::cout << "Mes: ";
+    std::cin >>mes_sup;
+    std::cout << "Dia: ";
+    std::cin>>dia_sup;
+    std::cout << "Hora: ";
+    std::cin>>hora_sup;
+    std::cout << "Minuto: ";
+    std::cin>>min_sup;
+    std::cout << "Segundo: ";
+    cin>>seg_sup;
+    dateTime fecha_sup(mes_sup, dia_sup, hora_sup, min_sup, seg_sup, "", "");
+    */
+    dateTime fecha_sup("Oct", 18, 2, 41, 40, "", "");
+    busqueda_binaria_sup = fecha_sup.busquedaBinaria(lista, fecha_sup.getDate());
+
+    if(busqueda_binaria_sup ==-1){
+        
+        std::cout << "\nLa fecha ingresada no se encontro" << endl;
+    }
+    else{
+        std::cout <<"Resultado de la busqueda superior: "<<busqueda_binaria_sup << endl;
+    }
+    for(int i = busqueda_binaria_inf; i<busqueda_binaria_sup+1; i++){
+        lista[i].imprime();
+    }
+    lista.clear();
+}

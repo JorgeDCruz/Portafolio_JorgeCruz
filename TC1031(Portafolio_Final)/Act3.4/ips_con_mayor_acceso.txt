@@ -1,0 +1,6 @@
+---------- Ips con mayor acceso ---------------
+10.15.187.246; Cantidad de repeticiones: 38
+10.15.176.241; Cantidad de repeticiones: 38
+10.15.183.241; Cantidad de repeticiones: 37
+10.15.176.230; Cantidad de repeticiones: 37
+10.15.177.224; Cantidad de repeticiones: 37
