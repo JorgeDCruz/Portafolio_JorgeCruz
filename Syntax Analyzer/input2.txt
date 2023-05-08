@@ -1,0 +1,32 @@
+clc
+clear
+
+t = 0:0.01:100;
+h = 0.01;
+S = zeros (1,length(t));
+I = zeros (1,length(t));
+R = zeros (1,length(t));
+
+S(1) = 45400;
+I(1) = 2100;
+R(1) = 2500;
+
+for k = 1:1:length(t)-1
+    dS = -0.00001 * S(k) * I(k);
+    dI = 0.00001 * S(k) * I(k) - I(k)/14;
+    dR = I(k)/14;
+    
+    S(k+1) = S(k) + dS * h;
+    I(k+1) = I(k) + dI * h;
+    R(k+1) = R(k) + dR * h;
+end
+
+figure (1)
+hold on
+title ('Difusión de una enfermedad')
+plot (t,S,'b')
+plot (t,I,'r')
+plot (t,R,'g')
+legend ('Susceptibles','Infectados','Recuperados')
+xlabel ("t")
+grid on
