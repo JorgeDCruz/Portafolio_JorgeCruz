@@ -1,0 +1,13 @@
+1 computadora 5000
+2 monitor 2500
+3 mouse 1000
+4 teclado 500
+5 celular 7000
+6 audifonos 150
+7 airpods 3000
+8 cargadores 200
+9 control 500
+10 funda 100
+11 tv 7000
+12 cable 300
+13 mica 70
